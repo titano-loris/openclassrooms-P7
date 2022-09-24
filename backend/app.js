@@ -15,7 +15,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
     console.log(err)
     if (err) {
-        console.log("erreur de connexion mongodb")
+        console.log("erreur de connexion mongodb ca marche pas")
     } else {
         console.log("connection mongodb success")
     }
