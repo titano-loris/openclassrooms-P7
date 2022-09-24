@@ -2,33 +2,20 @@
 validator: permet de s'assurer que le mot de passe de l'utilisateur est correct
 bp = npm package pour afficher le corp de la requete
 */
-const mongoose = ('mongoose');//Le package Mongoose facilite les interactions entre votre application Express et votre base de données MongoDB.
+const mongoose = require('mongoose');
 const express = require('express'); //import package express
 const bodyParser = require('body-parser');//package bodyparser
 
 const articleCtrl = require('./models/article');
 
-
-const { MongoClient } = require('mongodb');
 const uri = "mongodb+srv://hackNwin:rYv2DVlaaK20un71@cluster0.flfw3f2.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, });
-client.connect(err => {
-    console.log(err)
-    if (err) {
-        console.log("erreur de connexion mongodb ca marche pas")
-    } else {
-        console.log("connection mongodb success")
-    }
-});
-/*
-mongoose.connect("mongodb+srv://hackNwin:rYv2DVlaaK20un71@cluster0.flfw3f2.mongodb.net/?retryWrites=true&w=majority",
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
+
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => console.log("connection mongodb success"))
     .catch(() => console.log("connection failed"));
-*/
 
 
 const app = express();
