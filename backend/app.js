@@ -1,4 +1,4 @@
-/*importer=
+/*import=
 validator: permet de s'assurer que le mot de passe de l'utilisateur est correct
 bp = npm package pour afficher le corp de la requete
 */
@@ -6,10 +6,9 @@ const mongoose = require('mongoose');
 const express = require('express'); //import package express
 const bodyParser = require('body-parser');//package bodyparser
 
-const articleCtrl = require('./models/article');
+
 
 const uri = "mongodb+srv://hackNwin:rYv2DVlaaK20un71@cluster0.flfw3f2.mongodb.net/?retryWrites=true&w=majority";
-
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -28,6 +27,8 @@ app.use((req, res, next) => {
     next();
 });
 app.use(bodyParser.json());    //permet de rendre lisible les reponses et requetes http
+
+//insert routes
 
 
 module.exports = app;//exporter express (app)sur les autres applications
