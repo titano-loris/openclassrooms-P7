@@ -1,3 +1,4 @@
+//Préparez la base de données pour les informations d'authentification
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 

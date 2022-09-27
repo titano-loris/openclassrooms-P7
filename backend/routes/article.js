@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const articleCtrl = require('../controllers/article');
 const commentCtrl = require('../controllers/comment');
-const likeCtrl = require('../controllers/like');
 const auth = require('../middleware/auth');
 
 // Routes
