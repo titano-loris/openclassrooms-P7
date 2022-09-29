@@ -1,12 +1,11 @@
-const models = require("../models");
-const User = models.users;
-const Article = models.articles;
-const Comment = models.comments;
+const art = require("../models/article");
+const use = require("../models/user");
+
 
 
 const fs = require('fs');
 
-// logique métier : lire tous utilisateurs
+// logique métier : lire tous utilisateurs pour administrateur
 exports.findAllUsers = (req, res, next) => {
     User.findAll()
         .then(users => {

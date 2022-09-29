@@ -1,7 +1,5 @@
-const models = require("../models");
-const Article = models.articles;
-const Comment = models.comments;
-
+const Article = require('../models/article');
+const fs = require('fs');
 
 // logique métier : lire tous articles
 exports.findAllArticles = (req, res, next) => {
@@ -17,7 +15,7 @@ exports.findAllArticles = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 };
 
-// Find all articles where userId
+// logique metier:trouver tout les articles d'un utilisateur avec sont id
 exports.findArticlesByUserId = (req, res, next) => {
     Article.findAll({
         where: { userId: req.params.id },
@@ -54,15 +52,24 @@ exports.createArticle = (req, res, next) => {
     }
 
     const articleObject = req.body;
-
+    delete articleObject._id;
+    delete articleObject._userId;
     // Création d'un nouvel objet article
     const article = new Article({
         ...articleObject,
+        userId: req.auth.userId,
+        timestamp: Date.now(),
+        imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null,
+        likes: parseInt(0),
+        dislikes: parseInt(0),
+        usersLiked: [],
+        usersDisliked: []
     });
     // Enregistrement de l'objet article dans la base de données
     article.save()
         .then(() => res.status(201).json({ message: 'Article créé !' }))
         .catch(error => res.status(400).json({ error }));
+
 }
 
 // logique métier : modifier un article
@@ -70,6 +77,7 @@ exports.modifyArticle = (req, res, next) => {
     // éléments de la requète
     const title = req.body.title;
     const content = req.body.content;
+
 
     // vérification que tous les champs sont remplis
     if (title === null || title === '' || content === null || content === '') {
@@ -81,18 +89,18 @@ exports.modifyArticle = (req, res, next) => {
     Article.update({ ...articleObject, id: req.params.id }, { where: { id: req.params.id } })
         .then(() => res.status(200).json({ message: 'Article modifié !' }))
         .catch(error => res.status(400).json({ error }));
+
+    //comment.push (operateur push dans mongod pour inserer un element)
 };
 
 // Logique métier : supprimer un article
 exports.deleteArticle = (req, res, next) => {
     Like.destroy({ where: { articleId: req.params.id } })
         .then(() =>
-            Comment.destroy({ where: { articleId: req.params.id } })
-                .then(() =>
-                    Article.destroy({ where: { id: req.params.id } })
-                        .then(() => res.status(200).json({ message: 'Article supprimé !' }))
-                )
+            Article.destroy({ where: { id: req.params.id } })
+                .then(() => res.status(200).json({ message: 'Article supprimé !' }))
         )
+
         .catch(error => res.status(400).json({ error }));
 };
 

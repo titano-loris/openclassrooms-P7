@@ -1,5 +1,3 @@
-const db = require("../models");
-const User = db.users;
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -22,13 +20,13 @@ exports.signup = (req, res, next) => {
     // Masquage de l'adresse mail
     let buff = new Buffer(email);
     let emailInbase64 = buff.toString('base64');
-    // vérification si l'user existe dans DB
+    // vérification si l'user existe
     User.findOne({
         attributes: ['email'],
         where: { email: emailInbase64 }
     })
         .then((userFound) => {
-            // si l'utilisateur n'existe pas la DB
+            // si l'utilisateur n'existe pas 
             if (!userFound) {
                 // Hash du mot de passe avec bcrypt
                 bcrypt.hash(password, 10)
