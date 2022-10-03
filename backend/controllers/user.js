@@ -1,13 +1,9 @@
-const art = require("../models/article");
-const use = require("../models/user");
-
-
-
+const article = require("../models/article");
 const fs = require('fs');
-
+const User = require("../models/User");
 // logique métier : lire tous utilisateurs pour administrateur
 exports.findAllUsers = (req, res, next) => {
-    User.findAll()
+    User.find()
         .then(users => {
             console.log(users);
             res.status(200).json({ data: users });
@@ -17,7 +13,7 @@ exports.findAllUsers = (req, res, next) => {
 
 // logique métier : lire un utilisateur par son id
 exports.findOneUser = (req, res, next) => {
-
+    console.log("Find One User ?")
     User.findOne({ where: { id: req.params.id } })
         .then(user => {
             res.status(200).json(user)
@@ -63,14 +59,14 @@ exports.deleteUser = (req, res, next) => {
         .then(() =>
             Comment.destroy({ where: { userId: req.params.id } })
                 .then(() =>
-                    Article.findAll({ where: { userId: req.params.id } })
+                    article.findAll({ where: { userId: req.params.id } })
                         .then(
                             (articles) => {
                                 articles.forEach(
                                     (article) => {
                                         Comment.destroy({ where: { articleId: article.id } })
                                         Like.destroy({ where: { articleId: article.id } })
-                                        Article.destroy({ where: { id: article.id } })
+                                        article.destroy({ where: { id: article.id } })
                                     }
                                 )
                             }

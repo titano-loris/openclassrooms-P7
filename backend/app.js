@@ -34,7 +34,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use(bodyParser.json());//permet de rendre lisible les reponses et requetes http
-
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/article', routeArticle);
 app.use('/api/auth', routeAuth);

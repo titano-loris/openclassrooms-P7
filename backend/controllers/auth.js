@@ -1,4 +1,4 @@
-
+const User = require("../models/User");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -57,16 +57,16 @@ exports.signup = (req, res, next) => {
 // Création de connexion d'utilisateur enregistré (Post login)
 exports.login = (req, res, next) => {
     // Masquage de l'adresse mail
-    let buff = new Buffer(req.body.email);
-    let emailInbase64 = buff.toString('base64');
-
+    let emailFromReq = req.body.email;
+    console.log("Email user to check : " + JSON.stringify(emailFromReq))
     // Recherche d'un utilisateur dans la base de données
-    User.findOne({ where: { email: emailInbase64 } })
+    User.findOne({ email: emailFromReq })
         .then(user => {
             // Si on ne trouve pas l'utilisateur
             if (!user) {
                 return res.status(401).json({ error: 'Utilisateur non trouvé !' })
             }
+            console.log("User found !")
             // On compare le mot de passe de la requete avec celui de la base de données
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {

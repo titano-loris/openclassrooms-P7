@@ -1,9 +1,9 @@
 const Article = require('../models/article');
 const fs = require('fs');
-
+var MongoClient = require('mongodb').MongoClient;
 // logique métier : lire tous articles
 exports.findAllArticles = (req, res, next) => {
-    Article.findAll({
+    Article.find({
         order: [
             ['createdAt', 'DESC'],
         ]
@@ -17,7 +17,7 @@ exports.findAllArticles = (req, res, next) => {
 
 // logique metier:trouver tout les articles d'un utilisateur avec sont id
 exports.findArticlesByUserId = (req, res, next) => {
-    Article.findAll({
+    Article.find({
         where: { userId: req.params.id },
         order: [
             ['createdAt', 'DESC'],
@@ -59,7 +59,7 @@ exports.createArticle = (req, res, next) => {
         ...articleObject,
         userId: req.auth.userId,
         timestamp: Date.now(),
-        imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null,
+        imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null,//protocole http"://" et appel hote requet(host) pour localhost3000
         likes: parseInt(0),
         dislikes: parseInt(0),
         usersLiked: [],
@@ -95,7 +95,7 @@ exports.modifyArticle = (req, res, next) => {
 
 // Logique métier : supprimer un article
 exports.deleteArticle = (req, res, next) => {
-    Like.destroy({ where: { articleId: req.params.id } })
+    Like.deleteOne({ where: { articleId: req.params.id } })
         .then(() =>
             Article.destroy({ where: { id: req.params.id } })
                 .then(() => res.status(200).json({ message: 'Article supprimé !' }))
@@ -105,16 +105,16 @@ exports.deleteArticle = (req, res, next) => {
 };
 
 
-// logique métier : lire tous les likes
+// logique métier : lire tous les like
 exports.findAllLikes = (req, res, next) => {
-    Like.findAll({
+    Like.find({
         where: {
             articleId: req.params.id
         }
     })
-        .then(likes => {
-            console.log(likes);
-            res.status(200).json({ data: likes });
+        .then(like => {
+            console.log(like);
+            res.status(200).json({ data: like });
         })
         .catch(error => res.status(400).json({ error }));
 };
@@ -122,39 +122,39 @@ exports.findAllLikes = (req, res, next) => {
 // logique métier : créer un like
 exports.createLike = (req, res, next) => {
     const likeObject = req.body;
-    Like.findAll({
+    Like.find({
         where: {
             articleId: req.body.articleId,
             userId: req.body.userId
         }
     })
-        .then(likes => {
-            if (likes.length === 0) {
-                const like = new Like({
+        .then(like => {
+            if (like.length === 0) {
+                const like = new like({
                     ...likeObject
                 });
                 // Enregistrement de l'objet like dans la base de données
                 like.save()
                     .then(() => {
-                        Like.findAll({
+                        like.find({
                             where: { articleId: req.body.articleId }
-                        }).then(likes => {
-                            res.status(200).json({ like: likes.length });
+                        }).then(like => {
+                            res.status(200).json({ like: like.length });
                         })
                     })
                     .catch(error => res.status(400).json({ error }));
             } else {
-                Like.destroy({
+                like.deleteOne({
                     where: {
                         articleId: req.body.articleId,
                         userId: req.body.userId
                     }
                 })
                     .then(() => {
-                        Like.findAll({
+                        like.find({
                             where: { articleId: req.body.articleId }
-                        }).then(likes => {
-                            res.status(200).json({ like: likes.length });
+                        }).then(like => {
+                            res.status(200).json({ like: like.length });
                         })
                     })
                     .catch(error => res.status(400).json({ error }));
