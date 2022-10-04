@@ -17,29 +17,19 @@ exports.signup = (req, res, next) => {
         return res.status(400).json({ 'error': "Veuillez remplir l'ensemble des champs du formulaire" });
     }
 
-    // Masquage de l'adresse mail
-    let buff = new Buffer(email);
-    let emailInbase64 = buff.toString('base64');
     // vérification si l'user existe
-    User.findOne({
-        attributes: ['email'],
-        where: { email: emailInbase64 }
-    })
+    User.findOne({ email: email })
         .then((userFound) => {
             // si l'utilisateur n'existe pas 
             if (!userFound) {
                 // Hash du mot de passe avec bcrypt
                 bcrypt.hash(password, 10)
                     .then(hash => {
-                        // Masquage de l'adresse mail
-                        let buff = new Buffer(email);
-                        let emailInbase64 = buff.toString('base64');
-
                         // Création du nouvel utilisateur
                         const user = new User({
                             firstname: firstname,
                             lastname: lastname,
-                            email: emailInbase64,
+                            email: email,
                             password: hash
                         })
                         // Sauvegarde dans la base de données

@@ -1,6 +1,6 @@
 const Article = require('../models/article');
 const fs = require('fs');
-var MongoClient = require('mongodb').MongoClient;
+
 // logique métier : lire tous articles
 exports.findAllArticles = (req, res, next) => {
     Article.find({
@@ -17,12 +17,7 @@ exports.findAllArticles = (req, res, next) => {
 
 // logique metier:trouver tout les articles d'un utilisateur avec sont id
 exports.findArticlesByUserId = (req, res, next) => {
-    Article.find({
-        where: { userId: req.params.id },
-        order: [
-            ['createdAt', 'DESC'],
-        ]
-    })
+    Article.findOne({ userId: req.params.id })
         .then(articles => {
             console.log(articles);
             res.status(200).json({ data: articles });
@@ -32,7 +27,7 @@ exports.findArticlesByUserId = (req, res, next) => {
 
 // logique métier : lire un article par son id
 exports.findOneArticle = (req, res, next) => {
-    Article.findOne({ where: { id: req.params.id } })
+    Article.findOne({ id: req.params.id })
         .then(article => {
             console.log(article);
             res.status(200).json(article)
@@ -86,18 +81,16 @@ exports.modifyArticle = (req, res, next) => {
 
     const articleObject = req.body;
 
-    Article.update({ ...articleObject, id: req.params.id }, { where: { id: req.params.id } })
+    Article.updateOne({ ...articleObject, id: req.params.id }, { id: req.params.id })
         .then(() => res.status(200).json({ message: 'Article modifié !' }))
         .catch(error => res.status(400).json({ error }));
-
-    //comment.push (operateur push dans mongod pour inserer un element)
 };
 
 // Logique métier : supprimer un article
 exports.deleteArticle = (req, res, next) => {
     Like.deleteOne({ where: { articleId: req.params.id } })
         .then(() =>
-            Article.destroy({ where: { id: req.params.id } })
+            Article.deleteOne({ id: req.params.id })
                 .then(() => res.status(200).json({ message: 'Article supprimé !' }))
         )
 
@@ -107,11 +100,7 @@ exports.deleteArticle = (req, res, next) => {
 
 // logique métier : lire tous les like
 exports.findAllLikes = (req, res, next) => {
-    Like.find({
-        where: {
-            articleId: req.params.id
-        }
-    })
+    Like.find({ articleId: req.params.id })
         .then(like => {
             console.log(like);
             res.status(200).json({ data: like });
@@ -123,10 +112,8 @@ exports.findAllLikes = (req, res, next) => {
 exports.createLike = (req, res, next) => {
     const likeObject = req.body;
     Like.find({
-        where: {
-            articleId: req.body.articleId,
-            userId: req.body.userId
-        }
+        articleId: req.body.articleId,
+        userId: req.body.userId
     })
         .then(like => {
             if (like.length === 0) {
@@ -137,10 +124,11 @@ exports.createLike = (req, res, next) => {
                 like.save()
                     .then(() => {
                         like.find({
-                            where: { articleId: req.body.articleId }
-                        }).then(like => {
-                            res.status(200).json({ like: like.length });
+                            articleId: req.body.articleId
                         })
+                            .then(like => {
+                                res.status(200).json({ like: like.length });
+                            })
                     })
                     .catch(error => res.status(400).json({ error }));
             } else {
@@ -152,10 +140,11 @@ exports.createLike = (req, res, next) => {
                 })
                     .then(() => {
                         like.find({
-                            where: { articleId: req.body.articleId }
-                        }).then(like => {
-                            res.status(200).json({ like: like.length });
+                            articleId: req.body.articleId
                         })
+                            .then(like => {
+                                res.status(200).json({ like: like.length });
+                            })
                     })
                     .catch(error => res.status(400).json({ error }));
             }
