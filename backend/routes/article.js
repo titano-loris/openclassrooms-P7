@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const articleCtrl = require('../controllers/article');
 
-const auth = require('../middleware/multer');
+const multer = require('../middleware/multer');
+const auth = require('../middleware/auth');
 
 // Routes
 router.get('/', articleCtrl.findAllArticles);

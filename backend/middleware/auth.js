@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];  //recuperation du tokken a travers le header donc avec splitz diviser la chaine de caractére en un tableau on recupere le tokken qui est en deuxiéme
         const decodedToken = jwt.verify(token, 'token-mystere');//decoder le tokken recuperé avec 'verify' de jwt ainsi que la clef secrete 'RANDOM_TOKEN_SECRET'
         const userId = decodedToken.userId;      // recuperer userId avec la const decodedToken
-        req.authorization = { // request permet aux différente routes d'exploiter id 
+        req.auth = { // request permet aux différente routes d'exploiter id 
             userId: userId
         };
         next(); //si tout se passe bien appeler la fonction

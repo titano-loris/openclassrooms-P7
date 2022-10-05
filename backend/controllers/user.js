@@ -48,35 +48,35 @@ exports.modifyUser = (req, res, next) => {
             imageUrl: req.file.filename
         } : { ...req.body };
 
-    User.update({ ...userObject, id: req.params.id }, { where: { id: req.params.id } })
+    User.updateOne({ ...userObject, id: req.params.id }, { id: req.params.id })
         .then(() => res.status(200).json({ message: 'Utilisateur modifié !' }))
         .catch(error => res.status(400).json({ error }));
 };
 
 // logique métier : supprimer un utilisateur
 exports.deleteUser = (req, res, next) => {
-    Like.destroy({ where: { userId: req.params.id } })
+    Like.deleteOne({ userId: req.params.id })
         .then(() =>
-            Comment.destroy({ where: { userId: req.params.id } })
+            Comment.deleteOne({ userId: req.params.id })
                 .then(() =>
-                    article.findAll({ where: { userId: req.params.id } })
+                    article.findAll({ userId: req.params.id })
                         .then(
                             (articles) => {
                                 articles.forEach(
                                     (article) => {
-                                        Comment.destroy({ where: { articleId: article.id } })
-                                        Like.destroy({ where: { articleId: article.id } })
-                                        article.destroy({ where: { id: article.id } })
+                                        Comment.deleteOne({ articleId: article.id })
+                                        Like.deleteOne({ articleId: article.id })
+                                        article.deleteOne({ id: article.id })
                                     }
                                 )
                             }
                         )
                         .then(() =>
-                            User.findOne({ where: { id: req.params.id } })
+                            User.findOne({ id: req.params.id })
                                 .then(user => {
                                     const filename = user.imageUrl;
                                     fs.unlink(`images/${filename}`, () => {
-                                        User.destroy({ where: { id: req.params.id } })
+                                        User.deleteOne({ id: req.params.id })
                                             .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
                                     })
                                 })
