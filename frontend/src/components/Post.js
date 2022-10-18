@@ -1,7 +1,7 @@
 import { Box, Button, Card, CardContent } from "@mui/material";
 import CardMedia from '@mui/material/CardMedia';
 // import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+//import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import React, { useContext } from 'react';
 import { UserContext } from "./App";

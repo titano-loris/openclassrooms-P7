@@ -37,24 +37,18 @@ exports.findOneArticle = (req, res, next) => {
 
 // logique métier : créer un article
 exports.createArticle = (req, res, next) => {
-    // éléments de la requète
+
     const title = req.body.title;
     const content = req.body.content;
-    console.log("sa marche", req.body)
-
     // vérification que tous les champs sont remplis
-    /*if (title === null || title === '' || content === null || content === '') {
+    if (title === null || title === '' || content === null || content === '') {
         return res.status(400).json({ 'error': "Veuillez remplir les champs 'titre' et 'contenu' pour créer un article" });
-    }*/
-
-    const articleObject = req.body;
-    delete articleObject._id;
-    delete articleObject._userId;
-    console.log("la voiture", req.file);
+    }
     // Création d'un nouvel objet article
     const article = new Article({
-        ...articleObject,
-        userId: "req.auth.userId",
+        title: title,
+        content: content,
+        userId: "54545454iu",
         timestamp: Date.now(),
         imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null,//protocole http"://" et appel hote requet(host) pour localhost3000
         likes: parseInt(0),
@@ -65,7 +59,7 @@ exports.createArticle = (req, res, next) => {
     // Enregistrement de l'objet article dans la base de données
     article.save()
         .then(() => res.status(201).json({ message: 'Article créé !' }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => { console.log('here---', error) });
 
 }
 

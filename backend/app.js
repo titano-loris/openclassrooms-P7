@@ -23,9 +23,10 @@ mongoose.connect(uri, {
 
 
 const app = express();
-
-app.use(express.json()); //intercepte toutes les requetes qui on un 'content type json'
-
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 //les access control
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');//accée depuis n'importe quelle origine '*'
@@ -33,7 +34,6 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');//methode de requette http
     next();
 });
-app.use(bodyParser.json());//permet de rendre lisible les reponses et requetes http
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/article', routeArticle);

@@ -1,9 +1,9 @@
-import { Box, Button, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, Button, IconButton, /*InputAdornment,*/ TextField, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./App";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import EditIcon from '@mui/icons-material/Edit';
+//import EditIcon from '@mui/icons-material/Edit';
 
 function NewPost() {
 

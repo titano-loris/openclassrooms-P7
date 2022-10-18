@@ -3,8 +3,8 @@ import Timeline from './Timeline'
 import LogIn from './Login'
 import SignUp from './Signup'
 import NewPost from './NewPost'
-import {
-    BrowserRouter as Router,
+import {                            // installation du module 'react router' pour definir les URL avec les composants
+    BrowserRouter as Router,        // browserrouter utilise historique du html5
     Routes as Switch,
     Route
 } from 'react-router-dom';
