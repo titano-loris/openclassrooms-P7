@@ -12,7 +12,7 @@ function Like({ post, setEditable }) {
     const postAlreadyDisliked = post.usersDisliked.includes(user.userId);
 
     const likeRequest = (value) => {
-        fetch(`http://localhost:4200/api/post/${post._id}/like`, {
+        fetch(`http://localhost:3000/api/article/${post._id}/like`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

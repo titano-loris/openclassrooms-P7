@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardContent } from "@mui/material";
 import CardMedia from '@mui/material/CardMedia';
-// import CardContent from '@mui/material/CardContent';
+//import CardContent from '@mui/material/CardContent';
 //import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import React, { useContext } from 'react';
@@ -13,7 +13,7 @@ function Post({ post, setEditable }) {
 
     const handleRemovePost = (event) => {
         event.preventDefault();
-        fetch(`http://localhost:4200/api/post/${post._id}`, {
+        fetch(`http://localhost:3000/api/article/${post._id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${user.token}`
@@ -66,7 +66,13 @@ function Post({ post, setEditable }) {
                 />
             )}
             <CardContent>
-                {post.content}
+                Title : {post.title}
+            </CardContent>
+            <CardContent>
+                Content : {post.content}
+            </CardContent>
+            <CardContent>
+                Like : {post.likes}
             </CardContent>
             <CardActions disableSpacing>
                 {likeButtons}

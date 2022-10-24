@@ -9,7 +9,7 @@ exports.findAllArticles = (req, res, next) => {
         ]
     })
         .then(articles => {
-            console.log(articles);
+            //console.log(articles);
             res.status(200).json({ data: articles });
         })
         .catch(error => res.status(400).json({ error }));
@@ -37,7 +37,7 @@ exports.findOneArticle = (req, res, next) => {
 
 // logique métier : créer un article
 exports.createArticle = (req, res, next) => {
-
+    console.log('title', req.body)
     const title = req.body.title;
     const content = req.body.content;
     // vérification que tous les champs sont remplis
@@ -66,31 +66,44 @@ exports.createArticle = (req, res, next) => {
 // logique métier : modifier un article
 exports.modifyArticle = (req, res, next) => {
     // éléments de la requète
-    const title = req.body.title;
-    const content = req.body.content;
-
+    console.log("My body Put : " + req.body)
+    const titleReq = req.body.title;
+    const contentReq = req.body.content;
+    const imageReq = req.body.imageUrl;
+    console.log("In PUT : modifyArticl")
+    console.log("Article ID to changed : " + req.body._id)
+    console.log("Informations : ")
+    console.log("Title : " + titleReq)
+    console.log("Content : " + contentReq)
 
     // vérification que tous les champs sont remplis
-    if (title === null || title === '' || content === null || content === '') {
+    if (titleReq === null || titleReq === '' || titleReq == undefined || contentReq == undefined || contentReq === null || contentReq === '') {
         return res.status(400).json({ 'error': "Veuillez remplir les champs 'Titre' et 'Contenu' pour créer un article" });
+    } else {
+        const articleObject = req.body;
+
+        Article.updateOne(
+            { _id: req.params.id },
+            {
+                title: titleReq,
+                content: contentReq,
+                imageUrl: imageReq
+            })
+            .then(() => res.status(200).json({ message: 'Article modifié Loris !' }))
+            .catch(error => res.status(400).json({ error }));
     }
 
-    const articleObject = req.body;
 
-    Article.updateOne({ ...articleObject, id: req.params.id }, { id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Article modifié !' }))
-        .catch(error => res.status(400).json({ error }));
+
+
 };
 
 // Logique métier : supprimer un article
 exports.deleteArticle = (req, res, next) => {
-    Like.deleteOne({ where: { articleId: req.params.id } })
-        .then(() =>
-            Article.deleteOne({ id: req.params.id })
-                .then(() => res.status(200).json({ message: 'Article supprimé !' }))
-        )
 
-        .catch(error => res.status(400).json({ error }));
+    Article.deleteOne({ id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Article supprimé !' }))
+
 };
 
 

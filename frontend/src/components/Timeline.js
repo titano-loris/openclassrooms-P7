@@ -6,17 +6,17 @@ import EditPost from "./EditPost";
 function Timeline() {
 
     const [postList, setPostList] = useState([]);
-    const [editable, setEditable] = useState({ id: null, isEditable: false });
+    const [editable, setEditable] = useState({ id: null, isEditable: true });
 
     const getPostList = () => {
-        fetch('http://localhost:4200/api/post')
+        fetch('http://localhost:3000/api/article')
             .then(res => {
                 if (res.ok) {
                     return res.json();
                 }
             })
             .then(res => {
-                setPostList(res)
+                setPostList(res.data)
             })
             .catch((err) => {
                 console.error('err: ', err);
@@ -45,7 +45,9 @@ function Timeline() {
                 sx={{ margin: 1 }}
             >
                 {postList.map((post) => {
-                    if (editable.id === post._id && editable.isEditable) {
+                    console.log("post id : " + JSON.stringify(post))
+                    console.log("editable : " + JSON.stringify(editable))
+                    if (editable.isEditable) {
                         return (<Box
                             component={Grid}
                             item

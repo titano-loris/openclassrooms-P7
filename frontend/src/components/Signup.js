@@ -22,7 +22,7 @@ function SignUp() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('http://localhost:4200/api/auth/signup', {
+        fetch('http://localhost:3000/api/auth/signup', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

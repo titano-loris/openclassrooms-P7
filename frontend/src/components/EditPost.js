@@ -21,31 +21,39 @@ function EditPost({ post, setEditable }) {
             [name]: value,
         })
     }
+    const formData2 = new FormData();
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const formData = new FormData();
-
         let postCopy = { ...post }
-        postCopy.content = formValues.content
-        formData.append('post', JSON.stringify(postCopy))
+        formData2.append('content', formValues.content)
+        formData2.append('title', postCopy.title)
         if (image) {
-            formData.append('file', image)
+            formData2.append('imageUrl', image)
         }
-        fetch(`http://localhost:4200/api/post/${post._id}`, {
+        console.log("Post to sent : " + JSON.stringify(postCopy))
+        console.log("Form Data : " + formData2.get("content"))
+        console.log("ICI : " + post._id)
+        let data = new Map([['title', post.title], ['content', formValues.content]])
+        let jsonData = JSON.stringify(Object.fromEntries(data));
+
+        fetch(`http://localhost:3000/api/article/${post._id}`, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${user.token}`,
+                'Content-Type': 'multipart/form-data'
             },
-            body: formData
+            body: formData2
         })
             .then(value => {
+                console.log(value)
                 return (value.json())
             })
             .then(value => {
-                if (value) {
-                    setEditable({ id: null, isEditable: false })
-                }
+                /* console.log(value)
+                 if (value) {
+                     setEditable({ id: null, isEditable: false })
+                 }*/
             })
             .catch(err => {
                 if (err) { console.error(err) }

@@ -28,7 +28,7 @@ function App() {
 
                         <Switch>
                             <Route path='/login' element={<LogIn setUser={setUser} />} />
-                            <Route path='/' element={<Timeline />} />
+                            <Route path='/home' element={<Timeline />} />
                             <Route path='/signup' element={<SignUp />} />
                             <Route path='/newPost' element={<NewPost />} />
                         </Switch>

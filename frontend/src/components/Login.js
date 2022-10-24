@@ -24,7 +24,7 @@ function LogIn({ setUser }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('http://localhost:4200/api/auth/login', {
+        fetch('http://localhost:3000/api/auth/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -39,9 +39,9 @@ function LogIn({ setUser }) {
                 alert('Invalid user/password pair')
             })
             .then(user => {
-                setUser(user);
+                // setUser(user);
                 if (user) {
-                    navigate('/')
+                    navigate('/home')
                 }
             })
             .catch(err => {

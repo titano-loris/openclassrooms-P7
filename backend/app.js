@@ -30,11 +30,10 @@ app.use(bodyParser.json());
 //les access control
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');//accée depuis n'importe quelle origine '*'
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');//ajoute les header mentionner au requete vers API
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, Access-Control-Request-Method, Access-Control-Request-Headers');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');//methode de requette http
     next();
 });
-app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/article', routeArticle);
 app.use('/api/auth', routeAuth);
