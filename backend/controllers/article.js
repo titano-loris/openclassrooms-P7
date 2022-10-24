@@ -66,12 +66,10 @@ exports.createArticle = (req, res, next) => {
 // logique métier : modifier un article
 exports.modifyArticle = (req, res, next) => {
     // éléments de la requète
-    console.log("My body Put : " + req.body)
     const titleReq = req.body.title;
     const contentReq = req.body.content;
     const imageReq = req.body.imageUrl;
     console.log("In PUT : modifyArticl")
-    console.log("Article ID to changed : " + req.body._id)
     console.log("Informations : ")
     console.log("Title : " + titleReq)
     console.log("Content : " + contentReq)

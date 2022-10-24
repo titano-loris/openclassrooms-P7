@@ -40,8 +40,7 @@ function EditPost({ post, setEditable }) {
         fetch(`http://localhost:3000/api/article/${post._id}`, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${user.token}`,
-                'Content-Type': 'multipart/form-data'
+                'Authorization': `Bearer ${user.token}`
             },
             body: formData2
         })
@@ -50,10 +49,10 @@ function EditPost({ post, setEditable }) {
                 return (value.json())
             })
             .then(value => {
-                /* console.log(value)
+                console.log(value)
                  if (value) {
                      setEditable({ id: null, isEditable: false })
-                 }*/
+                 }
             })
             .catch(err => {
                 if (err) { console.error(err) }

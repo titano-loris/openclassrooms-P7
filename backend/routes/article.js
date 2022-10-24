@@ -10,7 +10,7 @@ router.get('/', articleCtrl.findAllArticles);
 router.get('/', articleCtrl.findArticlesByUserId);
 router.get('/:id', articleCtrl.findOneArticle);
 router.post('/', multer, articleCtrl.createArticle);
-router.put('/:id', articleCtrl.modifyArticle);
+router.put('/:id', multer, articleCtrl.modifyArticle);
 router.delete('/:id', articleCtrl.deleteArticle);
 router.get('/', articleCtrl.findAllLikes);
 router.post('/', articleCtrl.createLike);
