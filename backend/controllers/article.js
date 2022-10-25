@@ -37,7 +37,6 @@ exports.findOneArticle = (req, res, next) => {
 
 // logique métier : créer un article
 exports.createArticle = (req, res, next) => {
-    console.log('title', req.body)
     const title = req.body.title;
     const content = req.body.content;
     // vérification que tous les champs sont remplis
@@ -69,10 +68,6 @@ exports.modifyArticle = (req, res, next) => {
     const titleReq = req.body.title;
     const contentReq = req.body.content;
     const imageReq = req.body.imageUrl;
-    console.log("In PUT : modifyArticl")
-    console.log("Informations : ")
-    console.log("Title : " + titleReq)
-    console.log("Content : " + contentReq)
 
     // vérification que tous les champs sont remplis
     if (titleReq === null || titleReq === '' || titleReq == undefined || contentReq == undefined || contentReq === null || contentReq === '') {
@@ -107,7 +102,7 @@ exports.deleteArticle = (req, res, next) => {
 
 // logique métier : lire tous les like
 exports.findAllLikes = (req, res, next) => {
-    Like.find({ articleId: req.params.id })
+    Article.likes({ articleId: req.params.id })
         .then(like => {
             console.log(like);
             res.status(200).json({ data: like });
@@ -115,46 +110,43 @@ exports.findAllLikes = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 };
 
-// logique métier : créer un like
+// Création like ou dislike (Post/:id/like)
 exports.createLike = (req, res, next) => {
-    const likeObject = req.body;
-    Like.find({
-        articleId: req.body.articleId,
-        userId: req.body.userId
-    })
-        .then(like => {
-            if (like.length === 0) {
-                const like = new like({
-                    ...likeObject
-                });
-                // Enregistrement de l'objet like dans la base de données
-                like.save()
-                    .then(() => {
-                        like.find({
-                            articleId: req.body.articleId
-                        })
-                            .then(like => {
-                                res.status(200).json({ like: like.length });
-                            })
-                    })
-                    .catch(error => res.status(400).json({ error }));
-            } else {
-                like.deleteOne({
-                    where: {
-                        articleId: req.body.articleId,
-                        userId: req.body.userId
-                    }
-                })
-                    .then(() => {
-                        like.find({
-                            articleId: req.body.articleId
-                        })
-                            .then(like => {
-                                res.status(200).json({ like: like.length });
-                            })
-                    })
-                    .catch(error => res.status(400).json({ error }));
-            }
-        }
-        )
-}
+    // Si l'utilisateur aime 
+    // On ajoute 1 like et on l'envoie dans le tableau "usersLiked"
+
+    if (req.body.like === 1) {
+        Article.updateOne({ _id: req.params.id }, { $inc: { likes: req.body.like++ }, $push: { usersLiked: req.body.userId } })
+            .then((Article) => res.status(200).json({ message: 'Like ajouté !' }))
+            .catch(error => res.status(400).json({ error }));
+
+        // Si l'utilisateur n'aime pas
+        // On ajoute 1 dislike et on l'envoie dans le tableau "usersDisliked"
+
+    } else if (req.body.like === -1) {
+        Article.updateOne({ _id: req.params.id }, { $inc: { dislikes: (req.body.like++) * -1 }, $push: { usersDisliked: req.body.userId } })
+            .then((Article) => res.status(200).json({ message: 'Dislike ajouté !' }))
+            .catch(error => res.status(400).json({ error }));
+
+        // Si like === 0 l'utilisateur supprime son vote
+    } else {
+
+        Article.findOne({ _id: req.params.id })
+            .then(Article => {
+                // Si le tableau "userLiked" contient l'ID de l'utilisateur
+                if (Article.usersLiked.includes(req.body.userId)) {
+                    // On enlève un like du tableau "userLiked" 
+                    Article.updateOne({ _id: req.params.id }, { $pull: { usersLiked: req.body.userId }, $inc: { likes: -1 } })
+                        .then((Article) => { res.status(200).json({ message: 'Like supprimé !' }) })
+                        .catch(error => res.status(400).json({ error }))
+                } else if (Article.usersDisliked.includes(req.body.userId)) {
+                    // Si le tableau "userDisliked" contient l'ID de l'utilisateur
+                    // On enlève un dislike du tableau "userDisliked" 
+                    Article.updateOne({ _id: req.params.id }, { $pull: { usersDisliked: req.body.userId }, $inc: { dislikes: -1 } })
+                        .then((Article) => { res.status(200).json({ message: 'Dislike supprimé !' }) })
+                        .catch(error => res.status(400).json({ error }))
+                }
+            })
+            .catch(error => res.status(400).json({ error }));
+    }
+};

@@ -2,12 +2,15 @@ import { Box, Grid } from "@mui/material";
 import React, { useEffect, useState } from 'react'
 import Post from './Post'
 import EditPost from "./EditPost";
+import { useNavigate } from "react-router-dom";
 
 function Timeline() {
-
+    const navigate = useNavigate();
     const [postList, setPostList] = useState([]);
     const [editable, setEditable] = useState({ id: null, isEditable: true });
-
+    const newPost = () => {
+        navigate('/newPost');
+    }
     const getPostList = () => {
         fetch('http://localhost:3000/api/article')
             .then(res => {
@@ -33,6 +36,7 @@ function Timeline() {
             alignItems="center"
             justifyContent="space-around"
         >
+            <button onClick={newPost}>Ajouter nouveau post</button>
             <Grid
                 item
                 container
@@ -45,8 +49,6 @@ function Timeline() {
                 sx={{ margin: 1 }}
             >
                 {postList.map((post) => {
-                    console.log("post id : " + JSON.stringify(post))
-                    console.log("editable : " + JSON.stringify(editable))
                     if (editable.isEditable) {
                         return (<Box
                             component={Grid}

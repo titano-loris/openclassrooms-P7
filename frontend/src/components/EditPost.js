@@ -31,9 +31,6 @@ function EditPost({ post, setEditable }) {
         if (image) {
             formData2.append('imageUrl', image)
         }
-        console.log("Post to sent : " + JSON.stringify(postCopy))
-        console.log("Form Data : " + formData2.get("content"))
-        console.log("ICI : " + post._id)
         let data = new Map([['title', post.title], ['content', formValues.content]])
         let jsonData = JSON.stringify(Object.fromEntries(data));
 
@@ -50,9 +47,9 @@ function EditPost({ post, setEditable }) {
             })
             .then(value => {
                 console.log(value)
-                 if (value) {
-                     setEditable({ id: null, isEditable: false })
-                 }
+                if (value) {
+                    setEditable({ id: null, isEditable: false })
+                }
             })
             .catch(err => {
                 if (err) { console.error(err) }

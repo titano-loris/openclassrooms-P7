@@ -1,8 +1,4 @@
-import { Box, Button, Card, CardContent } from "@mui/material";
-import CardMedia from '@mui/material/CardMedia';
-//import CardContent from '@mui/material/CardContent';
-//import Typography from '@mui/material/Typography';
-import CardActions from '@mui/material/CardActions';
+import { Box, Button, Card, CardContent, CardActions, CardMedia, Typography } from "@mui/material";
 import React, { useContext } from 'react';
 import { UserContext } from "./App";
 import Like from "./Like";
@@ -39,9 +35,6 @@ function Post({ post, setEditable }) {
         setEditable({ id: post._id, isEditable: true });
     }
 
-    const likeButtons = user.token &&
-        <Like post={post} setEditable={setEditable} />
-
     const actionButtons = (user.isAdmin || post.userId === user.userId) &&
         <>
             <Button onClick={handleEditPost}>EDIT</Button>
@@ -71,11 +64,9 @@ function Post({ post, setEditable }) {
             <CardContent>
                 Content : {post.content}
             </CardContent>
-            <CardContent>
-                Like : {post.likes}
-            </CardContent>
             <CardActions disableSpacing>
-                {likeButtons}
+                <Like post={post} setEditable={setEditable} />
+
                 {actionButtons}
             </CardActions>
         </Box>
