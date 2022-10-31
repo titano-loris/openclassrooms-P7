@@ -12,7 +12,7 @@ function Post({ post, setEditable }) {
         fetch(`http://localhost:3000/api/article/${post._id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${user.token}`
+
             }
         })
             .then((res) => {
@@ -35,12 +35,6 @@ function Post({ post, setEditable }) {
         setEditable({ id: post._id, isEditable: true });
     }
 
-    const actionButtons = (user.isAdmin || post.userId === user.userId) &&
-        <>
-            <Button onClick={handleEditPost}>EDIT</Button>
-            <Button onClick={handleRemovePost}>REMOVE</Button>
-        </>
-
     const postCard =
         <Box
             component={Card}
@@ -59,6 +53,9 @@ function Post({ post, setEditable }) {
                 />
             )}
             <CardContent>
+                Post ID : {post._id}
+            </CardContent>
+            <CardContent>
                 Title : {post.title}
             </CardContent>
             <CardContent>
@@ -66,8 +63,8 @@ function Post({ post, setEditable }) {
             </CardContent>
             <CardActions disableSpacing>
                 <Like post={post} setEditable={setEditable} />
-
-                {actionButtons}
+                <Button onClick={handleEditPost}>EDIT</Button>
+                <Button onClick={handleRemovePost}>REMOVE</Button>
             </CardActions>
         </Box>
 

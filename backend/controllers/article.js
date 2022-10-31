@@ -1,5 +1,6 @@
 const Article = require('../models/article');
 const fs = require('fs');
+const mongoose = require('mongoose');
 
 // logique métier : lire tous articles
 exports.findAllArticles = (req, res, next) => {
@@ -27,7 +28,9 @@ exports.findArticlesByUserId = (req, res, next) => {
 
 // logique métier : lire un article par son id
 exports.findOneArticle = (req, res, next) => {
-    Article.findOne({ id: req.params.id })
+    // Change String to ObjectID to have a good filter
+    let articleId = mongoose.Types.ObjectId(req.params.id);
+    Article.findOne({ _id: articleId })
         .then(article => {
             console.log(article);
             res.status(200).json(article)
@@ -93,8 +96,10 @@ exports.modifyArticle = (req, res, next) => {
 
 // Logique métier : supprimer un article
 exports.deleteArticle = (req, res, next) => {
-
-    Article.deleteOne({ id: req.params.id })
+    console.log("Want to delete : " + req.params.id);
+    // Change String to ObjectID to have a good filter
+    let articleId = mongoose.Types.ObjectId(req.params.id);
+    Article.deleteOne({ _id: articleId })
         .then(() => res.status(200).json({ message: 'Article supprimé !' }))
 
 };
