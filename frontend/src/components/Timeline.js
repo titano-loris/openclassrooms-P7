@@ -20,6 +20,7 @@ function Timeline() {
             })
             .then(res => {
                 setPostList(res.data)
+                console.log('res.data', res.data)
             })
             .catch((err) => {
                 console.error('err: ', err);
@@ -28,6 +29,7 @@ function Timeline() {
 
     useEffect(() => {
         getPostList();
+        console.log('editable', editable)
     }, [editable]);
 
     return (
@@ -48,7 +50,8 @@ function Timeline() {
                 sx={{ margin: 1 }}
             >
                 {postList.map((post) => {
-                    if (editable.isEditable) {
+
+                    if (editable.isEditable && editable.id === post._id) {
                         return (<Box
                             component={Grid}
                             item

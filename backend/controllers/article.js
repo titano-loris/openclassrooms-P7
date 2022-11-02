@@ -70,7 +70,16 @@ exports.modifyArticle = (req, res, next) => {
     // éléments de la requète
     const titleReq = req.body.title;
     const contentReq = req.body.content;
-    const imageReq = req.body.imageUrl;
+    const imageReq = "";
+    if (req.file) {
+        imageReq = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null;//protocole http"://" et appel hote requet(host) pour localhost3000
+
+    }
+    else {
+        imageReq = req.body.imageUrl;
+    }
+
+
 
     // vérification que tous les champs sont remplis
     if (titleReq === null || titleReq === '' || titleReq == undefined || contentReq == undefined || contentReq === null || contentReq === '') {
