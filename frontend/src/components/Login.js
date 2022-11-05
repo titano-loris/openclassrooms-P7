@@ -39,7 +39,7 @@ function LogIn({ setUser }) {
                 alert('Invalid user/password pair')
             })
             .then(user => {
-                // setUser(user);
+                setUser(user);
                 if (user) {
                     navigate('/home')
                 }

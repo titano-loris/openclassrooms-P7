@@ -9,10 +9,10 @@ const auth = require('../middleware/auth');
 router.get('/', articleCtrl.findAllArticles);
 router.get('/', articleCtrl.findArticlesByUserId);
 router.get('/:id', articleCtrl.findOneArticle);
-router.post('/', multer, articleCtrl.createArticle);
-router.put('/:id', multer, articleCtrl.modifyArticle);
-router.delete('/:id', articleCtrl.deleteArticle);
+router.post('/', auth, multer, articleCtrl.createArticle);
+router.put('/:id', auth, multer, articleCtrl.modifyArticle);
+router.delete('/:id', auth, articleCtrl.deleteArticle);
 router.get('/', articleCtrl.findAllLikes);
-router.post('/:id/like', multer, articleCtrl.createLike);
+router.post('/:id/like', auth, multer, articleCtrl.createLike);
 
 module.exports = router;

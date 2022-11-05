@@ -53,12 +53,6 @@ function Post({ post, setEditable }) {
                 />
             )}
             <CardContent>
-                Post ID : {post._id}
-            </CardContent>
-            <CardContent>
-                Title : {post.title}
-            </CardContent>
-            <CardContent>
                 Content : {post.content}
             </CardContent>
             <CardActions disableSpacing>

@@ -13,4 +13,4 @@ router.get('/:id/articles', articleCtrl.findArticlesByUserId);
 router.put('/:id', multer, userCtrl.modifyUser);
 router.delete('/:id', userCtrl.deleteUser);
 
-module.exports = router; //a exporter dans app.js
+module.exports = router; 

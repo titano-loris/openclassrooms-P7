@@ -49,6 +49,7 @@ function Timeline() {
                 lg={6}
                 sx={{ margin: 1 }}
             >
+                <Button onClick={newPost}>Ajouter nouveau post</Button>
                 {postList.map((post) => {
 
                     if (editable.isEditable && editable.id === post._id) {
@@ -72,7 +73,7 @@ function Timeline() {
                     }
                 })}
             </Grid>
-            <Button onClick={newPost}>Ajouter nouveau post</Button>
+
         </Grid>
 
     )

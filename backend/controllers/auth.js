@@ -46,6 +46,7 @@ exports.signup = (req, res, next) => {
 
 // Création de connexion d'utilisateur enregistré (Post login)
 exports.login = (req, res, next) => {
+
     // Masquage de l'adresse mail
     let emailFromReq = req.body.email;
     console.log("Email user to check : " + JSON.stringify(emailFromReq))
