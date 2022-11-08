@@ -1,16 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const authCtrl = require('../controllers/user');
 
-const userCtrl = require('../controllers/user');
-const articleCtrl = require('../controllers/article');
-const multer = require('../middleware/multer');
-const auth = require('../middleware/auth');
+// Routes login
+router.post('/signup', authCtrl.signup);
+router.post('/login', authCtrl.login);
 
-
-router.get('/', userCtrl.findAllUsers);
-router.get('/:id', userCtrl.findOneUser);
-router.get('/:id/articles', articleCtrl.findArticlesByUserId);
-router.put('/:id', multer, userCtrl.modifyUser);
-router.delete('/:id', userCtrl.deleteUser);
-
-module.exports = router; 
+module.exports = router;

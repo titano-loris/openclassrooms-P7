@@ -8,12 +8,12 @@ const bodyParser = require('body-parser');//package bodyparser
 const path = require('path');
 
 const routeArticle = require('./routes/article');
-const routeAuth = require('./routes/auth');
+//const routeAuth = require('./routes/auth');
 const routeUser = require('./routes/user');
 
 
 //connexion mongoDB
-const uri = "mongodb+srv://hackNwin:rYv2DVlaaK20un71@cluster0.flfw3f2.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://admin:HackNwin@cluster0.flfw3f2.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -36,6 +36,7 @@ app.use((req, res, next) => {
 });
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/article', routeArticle);
-app.use('/api/auth', routeAuth);
 app.use('/api/user', routeUser);
+//app.use('/api/auth', routeAuth);
+
 module.exports = app;//exporter express (app)sur les autres applications

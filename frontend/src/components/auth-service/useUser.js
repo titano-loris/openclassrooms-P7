@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import getToken from './getToken';
 import getUserID from './getUserID';
-import getAdmin from './getAdmin';
+import getIsAdmin from './getIsAdmin';
 import saveUserID from './saveUserID';
 import saveToken from './saveToken';
-import saveAdmin from './saveAdmin';
+import saveIsAdmin from './saveIsAdmin';
 
 function useUser() {
 
     const localInfo = {
         token: getToken() ? getToken() : "",
         userId: getUserID() ? getUserID() : "",
-        isAdmin: getAdmin() ? getAdmin() : 0
+        isAdmin: getIsAdmin() ? getIsAdmin() : 0
     }
     const [user, setUser] = useState(localInfo);
 
@@ -20,7 +20,7 @@ function useUser() {
             setUser(user);
             saveUserID(user.userId);
             saveToken(user.token);
-            saveAdmin(user.Admin);
+            //saveIsAdmin(user.Admin);
         }
     }
 

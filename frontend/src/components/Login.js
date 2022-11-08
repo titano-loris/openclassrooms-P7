@@ -24,7 +24,7 @@ function LogIn({ setUser }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch('http://localhost:3000/api/auth/login', {
+        fetch('http://localhost:3000/api/user/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -41,7 +41,7 @@ function LogIn({ setUser }) {
             .then(user => {
                 setUser(user);
                 if (user) {
-                    navigate('/home')
+                    navigate('/')
                 }
             })
             .catch(err => {

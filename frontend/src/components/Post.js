@@ -12,7 +12,7 @@ function Post({ post, setEditable }) {
         fetch(`http://localhost:3000/api/article/${post._id}`, {
             method: 'DELETE',
             headers: {
-
+                //'Authorization': `Bearer ${user.token}`
             }
         })
             .then((res) => {
