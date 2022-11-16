@@ -20,7 +20,7 @@ function useUser() {
             setUser(user);
             saveUserID(user.userId);
             saveToken(user.token);
-            //saveIsAdmin(user.Admin);
+            saveIsAdmin(user.isAdmin);
         }
     }
 

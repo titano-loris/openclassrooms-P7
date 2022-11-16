@@ -70,7 +70,7 @@ exports.modifyArticle = (req, res, next) => {
     // éléments de la requète
     const titleReq = req.body.title;
     const contentReq = req.body.content;
-    const imageReq = "";
+    let imageReq = "";
     if (req.file) {
         imageReq = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null;//protocole http"://" et appel hote requet(host) pour localhost3000
 

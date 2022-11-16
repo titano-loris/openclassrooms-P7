@@ -6,13 +6,15 @@ import Like from "./Like";
 function Post({ post, setEditable }) {
 
     const user = useContext(UserContext);
+    console.log('user----', user)
+    const idAdmin = JSON.parse(localStorage.getItem('isAdmin'))
 
     const handleRemovePost = (event) => {
         event.preventDefault();
         fetch(`http://localhost:3000/api/article/${post._id}`, {
             method: 'DELETE',
             headers: {
-                //'Authorization': `Bearer ${user.token}`(mettre autorisation "isadmin" dans handleRemovePost)
+                'Authorization': `Bearer ${user.token}`
             }
         })
             .then((res) => {
@@ -57,8 +59,8 @@ function Post({ post, setEditable }) {
             </CardContent>
             <CardActions disableSpacing>
                 <Like post={post} setEditable={setEditable} />
-                <Button onClick={handleEditPost}>EDIT</Button>
-                <Button onClick={handleRemovePost}>REMOVE</Button>
+                <Button onClick={handleEditPost}>Edit</Button>
+                {idAdmin == "true" && <Button onClick={handleRemovePost}>REMOVE</Button>}
             </CardActions>
         </Box>
 

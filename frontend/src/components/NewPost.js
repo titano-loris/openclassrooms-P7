@@ -45,7 +45,7 @@ function NewPost() {
             })
             .then(value => {
                 if (value) {
-                    navigate('/');
+                    navigate('/home');
                 }
             })
             .catch(err => {

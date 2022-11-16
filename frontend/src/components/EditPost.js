@@ -29,7 +29,7 @@ function EditPost({ post, setEditable }) {
         formData2.append('content', formValues.content)
         formData2.append('title', postCopy.title)
         if (image) {
-            formData2.append('imageUrl', image)
+            formData2.append('image', image)
         }
         let data = new Map([['title', post.title], ['content', formValues.content]])
         let jsonData = JSON.stringify(Object.fromEntries(data));

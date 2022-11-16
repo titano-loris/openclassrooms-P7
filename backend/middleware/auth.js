@@ -11,6 +11,7 @@ module.exports = (req, res, next) => {
         req.auth = { // request permet aux différente routes d'exploiter id 
             userId: userId
         };
+        console.log('token', token)
         next(); //si tout se passe bien appeler la fonction
     } catch (error) {
         res.status(401).json({ error: error | 'Requête non authentifiée !' });

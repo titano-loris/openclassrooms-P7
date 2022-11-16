@@ -1,23 +1,30 @@
 import { Box, Grid, Button } from "@mui/material";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import Post from './Post'
 import EditPost from "./EditPost";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "./App";
 
 function Timeline() {
     const navigate = useNavigate();
+    const user = useContext(UserContext);
+    console.log('user', user)
     const [postList, setPostList] = useState([]);
     const [editable, setEditable] = useState({ id: null, isEditable: false });
     const newPost = () => {
         navigate('/newPost');
     }
     const getPostList = () => {
-        fetch('http://localhost:3000/api/article')
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-            })
+        fetch('http://localhost:3000/api/article', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+        })
             .then(res => {
                 setPostList(res.data)
                 console.log('res.data', res.data)

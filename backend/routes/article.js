@@ -6,7 +6,7 @@ const multer = require('../middleware/multer');
 const auth = require('../middleware/auth');
 
 // Routes
-router.get('/', articleCtrl.findAllArticles);
+router.get('/', auth, articleCtrl.findAllArticles);
 router.get('/', articleCtrl.findArticlesByUserId);
 router.get('/:id', articleCtrl.findOneArticle);
 router.post('/', auth, multer, articleCtrl.createArticle);
