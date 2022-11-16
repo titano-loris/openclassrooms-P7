@@ -41,7 +41,7 @@ function LogIn({ setUser }) {
             .then(user => {
                 setUser(user);
                 if (user) {
-                    navigate('/')
+                    navigate('/home')
                 }
             })
             .catch(err => {
